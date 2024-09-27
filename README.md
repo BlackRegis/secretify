@@ -1,6 +1,6 @@
-# secretify
+# App Secrets Management
 
-This Bash script automates the process of creating and sealing a Kubernetes secret, and generating a `values.yml` file from a `.env` file. It uses parameters to specify the type of secret, the secret name, and the namespace, and includes a help guide for usage.
+This Bash script automates the process of creating and sealing a Kubernetes secret, and generating a `values.yml` file from a `.env` file. It uses parameters to specify the type of secret, the secret name, and the namespace.
 
 ## Prerequisites
 
@@ -29,18 +29,10 @@ chmod +x main.sh
 
 ### Step 3: Run the Script
 
-You can now run the script using either long or short options.
-
-**Long Option Syntax:**
+You can execute the script using the following command:
 
 ```bash
-./main.sh --env-file <path_to_env_file> --secret-type <secret_type> --secret-name <secret_name> --namespace <namespace>
-```
-
-**Or short Option Syntax:**
-
-```bash
-./main.sh -e <path_to_env_file> -st <secret_type> -sn <secret_name> -n <namespace>
+./main.sh <path_to_env_file> <secret_type> <secret_name> <namespace>
 ```
 
 - **`<path_to_env_file>`**: Path to the `.env` file containing key-value pairs.
@@ -51,48 +43,26 @@ You can now run the script using either long or short options.
 **Example:**
 
 ```bash
-./main.sh --env-file .env --secret-type generic --secret-name keycloak-db-secret --namespace akieni-utility
-```
-
-or using short options:
-
-```bash
-./main.sh -e .env -st generic -sn keycloak-db-secret -n akieni-utility
-```
-
-### Step 4: Display Help
-
-To see a guide on how to use the script, you can run:
-
-```bash
-./main.sh --help
-```
-
-or
-
-```bash
-./main.sh -h
+./main.sh .env generic keycloak-db-secret akieni-utility
 ```
 
 ## Script Functionality
 
-1. **Help Option**: Displays a help message with usage instructions when `-h` or `--help` is provided.
+1. **Loader Animation**: Displays a loading animation during script execution.
 
-2. **Loader Animation**: A loading animation is displayed during script execution for visual feedback.
+2. **Parameter Checks**: Verifies that a `.env` file is provided and exists. Exits with an error message if not.
 
-3. **Parameter Checks**: Verifies that the required parameters are provided and that the `.env` file exists. Exits with an error message if any parameter is missing.
+3. **Process `.env` File**: Reads the `.env` file, splitting key-value pairs and storing them in an associative array.
 
-4. **Process `.env` File**: Reads the `.env` file, splitting key-value pairs and storing them in an associative array.
-
-5. **Create and Seal Kubernetes Secret**:
+4. **Create and Seal Kubernetes Secret**:
    - Uses `kubectl` to create a Kubernetes secret.
    - Seals the secret using `kubeseal` and outputs it to `secret.yml`.
 
-6. **Generate `values.yml`**:
+5. **Generate `values.yml`**:
    - Creates a `values.yml` file with the correct structure.
    - Converts keys to lowercase and formats them for use in Helm templates.
 
-7. **Run Python Script**: Executes `swap_secret.py` for further processing.
+6. **Run Python Script**: Executes `swap_secret.py` for further processing.
 
 ## Example Output
 
@@ -103,10 +73,8 @@ or
 
 - Ensure that the `.env` file is formatted correctly with key-value pairs separated by `=`.
 - Review the `secret.yml` and `values.yml` files to confirm that the generated content meets your expectations.
-- Use the `--help` or `-h` flag to view usage instructions if needed.
 
 ## Troubleshooting
 
 - If the `secret.yml` file is not created, check the error message and ensure that all tools are correctly installed and configured.
 - Ensure that the Python script `swap_secret.py` is available and executable.
-- Verify that the `.env` file exists and is correctly formatted with key-value pairs and always a line break at the end of the file.
