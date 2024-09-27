@@ -1,4 +1,4 @@
-# App Secrets Management
+# Secretify
 
 This Bash script automates the process of creating and sealing a Kubernetes secret, and generating a `values.yml` file from a `.env` file. It uses parameters to specify the type of secret, the secret name, and the namespace.
 
